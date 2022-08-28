@@ -80,4 +80,40 @@ books.get('/:id', (req, res) => {
         })
     })
 
+//POST
+books.post('/', (req, res) => {
+    Book.create(req.body)
+    .then(() => {
+        res.json('/books')
+    })
+    .catch(err => {
+        console.log('err', err)
+        res.render('error404')
+    })
+})
+
+//update
+books.put('/books/:id', (req, res) => {
+    Book.findByIdAndUpdate(req.params.id, req.body, {new: true})
+    .then(() => {
+        res.json(`/books/${req.params.id}`)
+    })
+    .catch(err => {
+        console.log('err', err)
+        res.json('error404')
+    })
+})
+
+//DELETE
+books.delete('/:id', (req, res) => {
+    Book.findByIdAndDelete(req.params.id)
+    .then(() => {
+        res.redirect('/books')
+    })
+    .catch(err => {
+        console.log('err', err)
+        res.json('error404')
+    })
+})
+
 module.exports = books;
